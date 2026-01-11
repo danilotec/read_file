@@ -1,6 +1,23 @@
 #include <Arduino.h>
 #include <LittleFS.h>
 
+
+
+const char* SSID = "Starlink"; 
+const char* PASSWORD = "32525291"; 
+
+const char* BROKER_MQTT = "9281d6a0da6d4dc6a8bc4ce9498e7c52.s1.eu.hivemq.cloud"; 
+int BROKER_PORT = 8883; 
+const char* USERNAME = "Piaui_on_off"; 
+const char* PASSWORD_MQTT = "Da32525291"; 
+
+
+#define TOPICO_SUBSCRIBE "Usinas_Sergipe_Sub"  
+#define TOPICO_PUBLISH  "Usinas_Sergipe"  
+
+#define ID_MQTT "Hospital da Crianca" 
+
+
 struct Config {
   char wifi_ssid[32];
   char wifi_pass[64];
