@@ -1,29 +1,15 @@
 #include <Arduino.h>
 #include <LittleFS.h>
 
-
-
-const char* SSID = "Starlink"; 
-const char* PASSWORD = "32525291"; 
-
-const char* BROKER_MQTT = "9281d6a0da6d4dc6a8bc4ce9498e7c52.s1.eu.hivemq.cloud"; 
-int BROKER_PORT = 8883; 
-const char* USERNAME = "Piaui_on_off"; 
-const char* PASSWORD_MQTT = "Da32525291"; 
-
-
-#define TOPICO_SUBSCRIBE "Usinas_Sergipe_Sub"  
-#define TOPICO_PUBLISH  "Usinas_Sergipe"  
-
-#define ID_MQTT "Hospital da Crianca" 
-
-
 struct Config {
   char wifi_ssid[32];
   char wifi_pass[64];
   char mqtt_host[64];
   int  mqtt_port;
-  int  send_interval;
+  char mqtt_username[32];
+  char mqtt_password[32];
+  char mqtt_subscribe_topic[32];
+  char mqtt_publish_topic[32];
   char device_id[32];
 };
 
@@ -56,7 +42,10 @@ void loadConfig() {
     else if (key == "wifi_pass") value.toCharArray(cfg.wifi_pass, sizeof(cfg.wifi_pass));
     else if (key == "mqtt_host") value.toCharArray(cfg.mqtt_host, sizeof(cfg.mqtt_host));
     else if (key == "mqtt_port") cfg.mqtt_port = value.toInt();
-    else if (key == "send_interval") cfg.send_interval = value.toInt();
+    else if (key == "mqtt_username") value.toCharArray(cfg.mqtt_username, sizeof(cfg.mqtt_username));
+    else if (key == "mqtt_password") value.toCharArray(cfg.mqtt_password, sizeof(cfg.mqtt_password));
+    else if (key == "mqtt_publish_topic") value.toCharArray(cfg.mqtt_publish_topic, sizeof(cfg.mqtt_publish_topic));
+    else if (key == "mqtt_subscribe_topic") value.toCharArray(cfg.mqtt_subscribe_topic, sizeof(cfg.mqtt_subscribe_topic));
     else if (key == "device_id") value.toCharArray(cfg.device_id, sizeof(cfg.device_id));
   }
 
@@ -64,6 +53,16 @@ void loadConfig() {
 }
 
 /* -------- usage example ---------
+void setup() {
+  Serial.begin(115200);
+
+  if (!LittleFS.begin(true)) {
+  Serial.println("Erro ao montar LittleFS");
+  return;
+  }
+
+  loadConfig();
+}
 
 void connectWiFi() {
   WiFi.begin(cfg.wifi_ssid, cfg.wifi_pass);
